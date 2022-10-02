@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="">
+    <head>
+        <meta charset="utf-8">
+        <title>Senzmap</title>
+        <link rel="stylesheet" href="{{url_for('static', filename = 'app.css')}}">
+    </head>
+    <body>
+        <div class="header">
+                <div class="header-logo">
+                    DVC Campus Navigation
+                </div>
+        </div>
+        <div class="parent">
+            <div class="left">
+
+                <div class="main">
+
+                    <canvas id="DrawCanvas" width="1000" height="1000"></canvas>
+                    <img src="/static/map.gif" alt="MapIMG" width=1000 height=1000 />
+                </div>
+
+                <div class="footer">
+
+                </div>
+            </div>
+            <div class="right">
+                <div class="topright">
+                </div>
+                <div>
+            
+                    <!-- User Input for the current location and destination. -->
+
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <label  for="currentLocation">Current Location</label><br>
+                            <select class="form-select" id="currentLocation" name="currentLoc" placeholder="currentLocation">
+                              <option selected>Choose...</option>
+                              <option value="1">Performing Arts Center</option>
+                              <option value="2">Student Union</option>
+                              <option value="3">Cafeteria</option>
+                              <option value="4">Student Services Center</option>
+                              <option value="5">Book Center</option>
+                              <option value="6">Math Building</option>
+                              <option value="7">Music</option>
+                              <option value="8">Library</option>
+                              <option value="9">Physical Science Building</option>
+                              <option value="10">Life and Health Science</option>
+                              <option value="11">Advanced Technology Center</option>
+                            </select>
+                        </div>
+    
+                        <div class="col-sm-3">
+                            <label  for="destination">Destination</label><br>
+                            <select class="form-select" id="destination" name="dest" placeholder="destination">
+                              <option selected>Choose...</option>
+                              <option value="1">Performing Arts Center</option>
+                              <option value="2">Student Union</option>
+                              <option value="3">Cafeteria</option>
+                              <option value="4">Student Services Center</option>
+                              <option value="5">Book Center</option>
+                              <option value="6">Math Building</option>
+                              <option value="7">Music</option>
+                              <option value="8">Library</option>
+                              <option value="9">Physical Science Building</option>
+                              <option value="10">Life and Health Science</option>
+                              <option value="11">Advanced Technology Center</option>
+                            </select>
+                        </div>
+
+                        <!-- Button to start the way to get the destination. -->
+                        <div class = "search-button">
+                            <button onclick="shortestDistance()">Search</button>
+                        </div>
+                        <script src="/static/scripts/main.js"></script>
+                    </div>
+                    
+                    <!-- hide the contents at first here. -->
+                    <div class="hidden-ob">
+                        <h1 id="output" style="display:none"></h1>
+                        <p></p>
+                    </div>
+                    
+                    <div class = "result">
+                        <script> async function shortestDistance(){
+                            console.log('button clicked')
+                            let source = document.getElementById("currentLocation").value
+                            let destination = document.getElementById("destination").value
+                            let source_name =  document.querySelector(`option[value='${source}']`).innerText
+                            let dest_name =  document.querySelector(`option[value='${destination}']`).innerText
+                            let response = await fetch("http://127.0.0.1:5000/shortestPath",
+                                {method: "POST", body: JSON.stringify({currentLoc:source_name, dest:dest_name}),
+                                    header: {"Content-Type": "application/json"}}).then(res => res.text())
+                                console.log(response)
+                                document.getElementById("output").style.display="block";
+                                document.getElementById("output").innerText = response;
+                        }</script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/static/scripts/canvas_coordinates.js"></script>
+
+
+    </body>
+</html>

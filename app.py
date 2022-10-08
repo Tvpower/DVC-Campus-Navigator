@@ -1,6 +1,7 @@
 # importing Flask and other modules
 from flask import Flask, request, render_template
 
+# External functions for implementing Dijkstra's Algorithm
 from graph_functions import retrace_routes, calculate_distance, get_path_info
 from instance import Graph
 from campus_data import get_init_main
